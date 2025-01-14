@@ -1,38 +1,19 @@
-version: '3.9'
-
+# Exported from Render on 2025-01-14T02:22:29Z
 services:
-  flask-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"  # Mapea el puerto 5000 del contenedor al host
-    restart: always
-    container_name: flask-api  # Nombre del contenedor
-    environment:
-      - FLASK_ENV=production   # Configuración del entorno
-      - PORT=5000              # Puerto interno de Flask
-    depends_on:
-      - database               # Si hay un servicio de base de datos
-    networks:
-      - flask-network          # Red personalizada para servicios
-    volumes:
-      - ./logs:/app/logs       # Mapea los logs del contenedor al host
-
-  database:
-    image: mongo:6.0
-    container_name: mongodb
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - flask-network
-
-networks:
-  flask-network:
-    driver: bridge  # Red personalizada para todos los servicios
-
-volumes:
-  mongodb_data:
+- type: web
+  name: ejemplo-1
+  runtime: python
+  repo: https://github.com/S3-Omar/ejemplo
+  plan: free
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: gunicorn main:app
+- type: web
+  name: ejemplo
+  runtime: python
+  repo: https://github.com/S3-Omar/ejemplo
+  plan: free
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: python3 api.py
+version: "1"
