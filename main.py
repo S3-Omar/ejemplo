@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import os
+import gunicorn
 
 app = Flask(__name__)
 
